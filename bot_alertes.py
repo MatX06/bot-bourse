@@ -11,6 +11,9 @@ import yfinance as yf
 import pandas as pd
 
 load_dotenv()
+print(f"TOKEN = {os.getenv('TELEGRAM_TOKEN')}")
+print(f"CHAT_ID = {os.getenv('TELEGRAM_CHAT_ID')}")
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
