@@ -267,7 +267,7 @@ def run():
     while True:
 
         # ── Message "je suis prêt" toutes les 48h ──
-        if last_heartbeat is None or (datetime.now() - last_heartbeat).total_seconds() > 60:
+        if last_heartbeat is None or (datetime.now() - last_heartbeat).total_seconds() > 172800:
             vix_hb = get_vix()
             envoyer(
                 f"✅ <b>Hey, je suis prêt !</b>\n\n"
