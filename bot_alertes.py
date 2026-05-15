@@ -252,6 +252,7 @@ def formater_alerte_vix(vix: float) -> str:
 def run():
     last_alert: dict[str, datetime] = {}
     last_vix_alert: datetime | None = None
+    last_heartbeat: datetime | None = None
 
     log.info("Bot démarré !")
     envoyer(
@@ -261,6 +262,20 @@ def run():
     )
 
     while True:
+
+        # ── Message "je suis prêt" toutes les 48h ──
+        if last_heartbeat is None or (datetime.now() - last_heartbeat).total_seconds() > 172800:
+            vix_hb = get_vix()
+            envoyer(
+                f"✅ <b>Hey, je suis prêt !</b>\n\n"
+                f"Je surveille tes {len(WATCHLIST)} actions et je n'ai pas dormi.\n"
+                f"Aucune alerte d'achat depuis mon dernier message.\n\n"
+                f"📊 VIX actuel : {vix_hb if vix_hb else 'indisponible'} "
+                f"{'(marché calme)' if vix_hb and vix_hb < 20 else '(tension)' if vix_hb and vix_hb < 35 else '(CRISE !)' if vix_hb else ''}\n"
+                f"🕐 {datetime.now().strftime('%d/%m/%Y à %H:%M')}"
+            )
+            last_heartbeat = datetime.now()
+
         vix = get_vix()
         log.info(f"VIX = {vix}")
 
